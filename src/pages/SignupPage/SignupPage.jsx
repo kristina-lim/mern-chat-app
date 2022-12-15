@@ -1,123 +1,111 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import * as usersService from '../../utilities/users-service';
 import {
   MDBContainer,
+  MDBIcon,
   MDBInput,
   MDBRow,
   MDBCol,
   MDBBtn
 } from 'mdb-react-ui-kit';
+import botImg from '../../imgs/bot.jpeg';
 import './SignupPage.css';
 
 export default function SignupPage({ setUser }) {
   const [credentials, setCredentials] = useState({
-        email: '',
-        password: ''
+    name: '',
+    email: '',
+    password: '',
+    confirm: ''
+  });
+  const [img, setImg] = useState(null);
+  const [uploadingImg, setUploadingImg] = useState(false);
+  const [imgPreview, setImgPreview] = useState(null);
+  const [error, setError] = useState('');
+  
+  function validateImg(evt) {
+    const file = evt.target.files[0];
+    if (file.size > 1048576) {
+      return alert('Max file size is 1MB');
+    } else {
+      setImg(file);
+      setImgPreview(URL.createObjectURL(file));
+    }
+  }
+  
+  async function uploadImg() {
+    const data = new FormData();
+    data.append('file', img);
+    data.append('upload_preset', 'ml_default');
+    try {
+      setUploadingImg(true);
+      let res = await fetch('https://api.cloudinary.com/v1_1/dupumqibn/image/upload', {
+        method: 'POST',
+        body: data
       });
-      const [error, setError] = useState('');
+      const urlData = await res.json();
+      setUploadingImg(false);
+      return urlData.url;
+    } catch(error) {
+      setUploadingImg(false);
+      console.log(error);
+    }
+  }
+
+  function handleChange(evt) {
+    setCredentials({ ...credentials, [evt.target.name]: evt.target.value });
+    setError('');
+  }
     
-      function handleChange(evt) {
-        setCredentials({ ...credentials, [evt.target.name]: evt.target.value });
-        setError('');
-      }
-    
-      async function handleSubmit(evt) {
-        // Prevent form from being submitted to the server
-        evt.preventDefault();
-        try {
-          // The promise returned by the signUp service method 
-          // will resolve to the user object included in the
-          // payload of the JSON Web Token (JWT)
-          const user = await usersService.login(credentials);
-          setUser(user);
-        } catch {
-          setError('Log In Failed - Try Again');
-        }
-      }
+  async function handleSubmit(evt) {
+    evt.preventDefault();
+    if (!img) return alert('Please upload your profile picture');
+    const url = await uploadImg(img);
+    console.log(url);
+    // try {
+    //   const user = await usersService.login(credentials);
+    //   setUser(user);
+    // } catch {
+    //   setError('Signup Failed - Try Again');
+    // }
+  }
 
   return (
     <MDBContainer>
       <MDBRow>
         <MDBCol md={7} className='d-flex align-items-center justify-content-center flex-direction-column'>
-          <form onSubmit={handleSubmit} style={{ width: "80%", maxWidth: 500 }}>
-            <h1>Create an Account</h1>
-            <div className='signup-profile-pic-container'>
-              {/* <img src="" className='signup-profile-pic' /> */}
-            </div>
-            <label>Name:</label>
-            <MDBInput className='mb-4' type='text' name='name' label='Name' value={credentials.email} onChange={handleChange} required />
-            <label>Email:</label>
-            <MDBInput className='mb-4' type='text' name='email' label='Email address' value={credentials.email} onChange={handleChange} required />
-            <label>Password:</label>
-            <MDBInput className='mb-4' type='password' name='password' label='Password' value={credentials.password} onChange={handleChange} required />
+          <form autoComplete='off' onSubmit={handleSubmit} style={{ width: "80%", maxWidth: 500 }}>
+              <h1 className='text-center'>Create Account</h1>
+              <br></br>
+              <div className='signup-profile-pic-container'>
+                <img src={imgPreview || botImg} alt='' className='signup-profile-pic' />
+                <label htmlFor='image-upload' className='image-upload-label'>
+                  <MDBIcon fas icon='plus-circle add-picture-icon' />
+                </label>
+                <input type='file' id='image-upload' hidden accept='image/png, image/jpeg' onChange={validateImg} />
+              </div>
+              <br></br>
+              <MDBInput className='mb-4' type='text' name='name' label='Name' value={credentials.name} onChange={handleChange} required />
+              <br></br>
+              <MDBInput className='mb-4' type='text' name='email' label='Email Address' value={credentials.email} onChange={handleChange} required />
+              <br></br>
+              <MDBInput className='mb-4' type='password' name='password' label='Password' value={credentials.password} onChange={handleChange} required />
+              <br></br>
+              <MDBInput className='mb-4' type='password' name='confirm' label='Confirm Password' value={credentials.confirm} onChange={handleChange} required />
             <MDBBtn type='submit' className='mb-4' block>
-              Sign Up
+              {uploadingImg ? 'Signing you up..' : 'Signup'}
             </MDBBtn>
+            <div className='text-center'>
+              <p>
+                Already have an account? <Link to='/login'>Login</Link>
+              </p>
+            </div>
           </form>
-          <p className="error-message">&nbsp;{error}</p>
+          <p className='error-message'>&nbsp;{error}</p>
         </MDBCol>
         <MDBCol md={5} className='signup-bg'></MDBCol>
       </MDBRow>
     </MDBContainer>
   );
 }
-
-// import { Component } from 'react';
-// import { signUp } from '../../utilities/users-service';
-
-// export default class SignUpForm extends Component {
-//   state = {
-//     name: '',
-//     email: '',
-//     password: '',
-//     confirm: '',
-//     error: ''
-//   };
-
-//   handleChange = (evt) => {
-//     this.setState({
-//       [evt.target.name]: evt.target.value,
-//       error: '' 
-//     });
-//   };
-
-//   handleSubmit = async (evt) => {
-//     evt.preventDefault();
-//     try {
-//       const {name, email, password} = this.state;
-//       const formData = {name, email, password};
-//       // The promise returned by the sign/Up service
-//       // method will resolve to the user object includes
-//       // in the payload of the JSON Web Token (JWT)
-//       const user = await signUp(formData);
-//       this.props.setUser(user);
-//     } catch {
-//       // An error occurred probably due to 
-//       // a duplicate email
-//       this.setState({ error: 'Sign Up Failed - Try Again' });
-//     }
-//   };
-
-//   render() {
-//     const disable = this.state.password !== this.state.confirm;
-//     return (
-//       <div>
-//         <div className="form-container">
-//           <form autoComplete="off" onSubmit={this.handleSubmit}>
-//             <label>Name</label>
-//             <input type="text" name="name" value={this.state.name} onChange={this.handleChange} required />
-//             <label>Email</label>
-//             <input type="email" name="email" value={this.state.email} onChange={this.handleChange} required />
-//             <label>Password</label>
-//             <input type="password" name="password" value={this.state.password} onChange={this.handleChange} required />
-//             <label>Confirm</label>
-//             <input type="password" name="confirm" value={this.state.confirm} onChange={this.handleChange} required />
-//             <button type="submit" disabled={disable}>SIGN UP</button>
-//           </form>
-//         </div>
-//         <p className="error-message">&nbsp;{this.state.error}</p>
-//       </div>
-//     );
-//   }
-// }

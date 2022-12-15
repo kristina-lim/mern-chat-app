@@ -32,7 +32,7 @@ export default function LoginPage({ setUser }) {
           const user = await usersService.login(credentials);
           setUser(user);
         } catch {
-          setError('Log In Failed - Try Again');
+          setError('Login Failed - Try Again');
         }
       }
 
@@ -41,9 +41,9 @@ export default function LoginPage({ setUser }) {
       <MDBRow>
         <MDBCol md={5} className='login-bg'></MDBCol>
         <MDBCol md={7} className='d-flex align-items-center justify-content-center flex-direction-column'>
-          <form onSubmit={handleSubmit} style={{ width: "80%", maxWidth: 500 }}>
+          <form autoComplete='off' onSubmit={handleSubmit} style={{ width: "80%", maxWidth: 500 }}>
             <label>Email:</label>
-            <MDBInput className='mb-4' type='text' name='email' label='Email address' value={credentials.email} onChange={handleChange} required />
+            <MDBInput className='mb-4' type='text' name='email' label='Email Address' value={credentials.email} onChange={handleChange} required />
             <label>Password:</label>
             <MDBInput className='mb-4' type='password' name='password' label='Password' value={credentials.password} onChange={handleChange} required />
             <MDBBtn type='submit' className='mb-4' block>
@@ -55,7 +55,7 @@ export default function LoginPage({ setUser }) {
               </p>
             </div>
           </form>
-          <p className="error-message">&nbsp;{error}</p>
+          <p className='error-message'>&nbsp;{error}</p>
         </MDBCol>
       </MDBRow>
     </MDBContainer>
