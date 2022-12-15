@@ -1,84 +1,71 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import * as userService from '../../utilities/users-service';
+// import * as userService from '../../utilities/users-service';
 import {
-  MDBNavbar,
   MDBContainer,
+  MDBNavbar,
+  MDBNavbarBrand,
+  MDBNavbarToggler,
   MDBIcon,
   MDBNavbarNav,
   MDBNavbarItem,
   MDBNavbarLink,
-  MDBNavbarToggler,
-  MDBNavbarBrand,
-  MDBCollapse
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem,
+  MDBCollapse,
 } from 'mdb-react-ui-kit';
 
-export default function NavBar({ user, setUser }) {
-  const [showNavColor, setShowNavColor] = useState(false);
-  const [showNavColorSecond, setShowNavColorSecond] = useState(false);
-  const [showNavColorThird, setShowNavColorThird] = useState(false);
-  
-  function handleLogOut() {
-    userService.logOut();
-    setUser(null);
-  }
+export default function App({ user, setUser }) {
+  const [showBasic, setShowBasic] = useState(false);
 
   return (
     <>
-      <MDBNavbar expand='lg' light style={{ backgroundColor: '#FFF8E1' }}>
+      <MDBNavbar expand='lg' light bgColor='light' style={{ backgroundColor: '#FFF8E1' }} id="navbarRightAlignExample">
         <MDBContainer fluid>
-          <MDBNavbarBrand href='#'>
+          <MDBNavbarBrand href='/'>
             <img
               src='https://i.imgur.com/LVWGHBr.gif'
-              height='90'
-              width='90'
+              height='70'
+              width='70'
               alt=''
               loading='lazy'
             />
           </MDBNavbarBrand>
           <MDBNavbarToggler
-            type='button'
-            data-target='#navbarColor02'
-            aria-controls='navbarColor02'
+            aria-controls='navbarSupportedContent'
             aria-expanded='false'
             aria-label='Toggle navigation'
-            onClick={() => setShowNavColorThird(!showNavColorThird)}
+            onClick={() => setShowBasic(!showBasic)}
           >
             <MDBIcon icon='bars' fas />
           </MDBNavbarToggler>
-          <MDBCollapse show={showNavColorThird} navbar>
-            <MDBNavbarNav className='me-auto mb-2 mb-lg-0'>
-              <MDBNavbarItem className='active'>
-                <MDBNavbarLink aria-current='page' to='/profile'>
-                  Profile
-                </MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink to='#'>Features</MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink href='/chat'>Chat</MDBNavbarLink>
-              </MDBNavbarItem>
-              <MDBNavbarItem>
-                <MDBNavbarLink href='' onClick={handleLogOut}>Log Out</MDBNavbarLink>
-              </MDBNavbarItem>
-            </MDBNavbarNav>
+          <MDBCollapse navbar show={showBasic} className='navbar_position'>
+              <MDBNavbarNav className='ms-auto mb-2 mb-lg-0'>
+                <MDBNavbarItem>
+                  <MDBNavbarLink active aria-current='page' href='/login'>
+                    Login
+                  </MDBNavbarLink>
+                </MDBNavbarItem>
+                <MDBNavbarItem>
+                  <MDBNavbarLink href='/chat'>Chat</MDBNavbarLink>
+                </MDBNavbarItem>
+                <MDBNavbarItem>
+                  <MDBDropdown>
+                    <MDBDropdownToggle tag='a' className='nav-link' role='button'>
+                      Dropdown
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu>
+                      <MDBDropdownItem link>Action</MDBDropdownItem>
+                      <MDBDropdownItem link>Another action</MDBDropdownItem>
+                      <MDBDropdownItem link>Something else here</MDBDropdownItem>
+                    </MDBDropdownMenu>
+                  </MDBDropdown>
+                </MDBNavbarItem>
+              </MDBNavbarNav>
           </MDBCollapse>
         </MDBContainer>
       </MDBNavbar>
     </>
   );
 }
-
-  
-//   return (
-//     <nav>
-//       <Link to="/orders">Order History</Link>
-//       &nbsp; | &nbsp;
-//       <Link to="/orders/new">New Order</Link>
-//       &nbsp; | &nbsp;
-//       <span>Welcome, {user.name}</span>
-//       &nbsp;&nbsp;<Link to="" onClick={handleLogOut}>Log Out</Link>
-//     </nav>
-//   );
-// }
