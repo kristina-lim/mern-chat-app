@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as usersService from '../../utilities/users-service';
 import {
+  MDBContainer,
   MDBInput,
   MDBCol,
   MDBRow,
@@ -36,15 +37,15 @@ export default function LoginPage({ setUser }) {
       }
 
   return (
-    <>
+    <MDBContainer>
       <MDBRow>
-        <MDBCol md={5} className='login_bg'></MDBCol>
+        <MDBCol md={5} className='login-bg'></MDBCol>
         <MDBCol md={7} className='d-flex align-items-center justify-content-center flex-direction-column'>
           <form onSubmit={handleSubmit} style={{ width: "80%", maxWidth: 500 }}>
             <label>Email:</label>
-            <MDBInput className='mb-4' name='email' label='Email address' value={credentials.email} onChange={handleChange} required />
+            <MDBInput className='mb-4' type='text' name='email' label='Email address' value={credentials.email} onChange={handleChange} required />
             <label>Password:</label>
-            <MDBInput className='mb-4' name='password' label='Password' value={credentials.password} onChange={handleChange} required />
+            <MDBInput className='mb-4' type='password' name='password' label='Password' value={credentials.password} onChange={handleChange} required />
             <MDBBtn type='submit' className='mb-4' block>
               Log in
             </MDBBtn>
@@ -57,7 +58,7 @@ export default function LoginPage({ setUser }) {
           <p className="error-message">&nbsp;{error}</p>
         </MDBCol>
       </MDBRow>
-    </>
+    </MDBContainer>
   );
 }
 

@@ -2,11 +2,13 @@ import React from 'react';
 import { useState } from 'react';
 import * as usersService from '../../utilities/users-service';
 import {
+  MDBContainer,
   MDBInput,
-  MDBCol,
   MDBRow,
+  MDBCol,
   MDBBtn
 } from 'mdb-react-ui-kit';
+import './SignupPage.css';
 
 export default function SignupPage({ setUser }) {
   const [credentials, setCredentials] = useState({
@@ -35,28 +37,29 @@ export default function SignupPage({ setUser }) {
       }
 
   return (
-    <>
+    <MDBContainer>
       <MDBRow>
-        <MDBCol md={5} className='signup_bg'></MDBCol>
         <MDBCol md={7} className='d-flex align-items-center justify-content-center flex-direction-column'>
           <form onSubmit={handleSubmit} style={{ width: "80%", maxWidth: 500 }}>
-            <h5>Email:</h5>
-            <MDBInput className='mb-4' type='email' label='Email address' value={credentials.email} onChange={handleChange} required />
-            <h5>Password:</h5>
-            <MDBInput className='mb-4' type='password' label='Password' value={credentials.password} onChange={handleChange} required />
-            <MDBBtn type='submit' className='mb-4' block>
-              Log in
-            </MDBBtn>
-            <div className='text-center'>
-              <p className='text-center'>
-                Don't have an account? <a href='/signup'>Signup</a>
-              </p>
+            <h1>Create an Account</h1>
+            <div className='signup-profile-pic-container'>
+              {/* <img src="" className='signup-profile-pic' /> */}
             </div>
+            <label>Name:</label>
+            <MDBInput className='mb-4' type='text' name='name' label='Name' value={credentials.email} onChange={handleChange} required />
+            <label>Email:</label>
+            <MDBInput className='mb-4' type='text' name='email' label='Email address' value={credentials.email} onChange={handleChange} required />
+            <label>Password:</label>
+            <MDBInput className='mb-4' type='password' name='password' label='Password' value={credentials.password} onChange={handleChange} required />
+            <MDBBtn type='submit' className='mb-4' block>
+              Sign Up
+            </MDBBtn>
           </form>
           <p className="error-message">&nbsp;{error}</p>
         </MDBCol>
+        <MDBCol md={5} className='signup-bg'></MDBCol>
       </MDBRow>
-    </>
+    </MDBContainer>
   );
 }
 

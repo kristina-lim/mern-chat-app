@@ -17,12 +17,12 @@ export default function HomePage() {
           <p>Hermes Messenger lets you connect with the world</p>
           <Link to="/chat">
             <MDBBtn color="success">
-              Get Started <MDBIcon fas icon="comments" className="message_icon" />
+              Get Started <MDBIcon fas icon="comments" className="message-icon" />
             </MDBBtn>
           </Link>
         </div>
       </MDBCol>
-      <MDBCol md={6} className="home_bg"></MDBCol>
+      <MDBCol md={6} className="home-bg"></MDBCol>
     </MDBRow>
   );
 }
