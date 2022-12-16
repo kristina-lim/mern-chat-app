@@ -1,0 +1,19 @@
+.messages-output {
+  padding-top: 70vh;
+  border: 1px solid lightgray;
+  overflow-y: scroll;
+  margin-bottom: 20px;
+}
+
+.message-form {
+  display: grid;
+  grid-template-columns: 1fr .2fr; 
+}
+
+.message-input {
+  width: 100%;
+}
+
+.message-btn {
+  grid-column: 5;
+}
