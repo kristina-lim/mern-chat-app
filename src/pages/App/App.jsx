@@ -1,8 +1,8 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
-// import { getUser } from '../../utilities/users-service';
+import { getUser } from '../../utilities/users-service';
 import './App.css';
-// import AuthPage from '../AuthPage/AuthPage';
+import AuthPage from '../AuthPage/AuthPage';
 import HomePage from '../HomePage/HomePage';
 import LoginPage from '../LoginPage/LoginPage';
 import SignupPage from '../SignupPage/SignupPage';
@@ -10,29 +10,30 @@ import ChatPage from '../ChatPage/ChatPage';
 import NavBar from '../../components/NavBar/NavBar';
 
 export default function App() {
-  // const [user, setUser] = useState(getUser());
+  const [user, setUser] = useState(getUser());
   
   return (
     <main className="App">
-      {/* { user ?
+      { user ?
         <>
           <NavBar user={user} setUser={setUser} />
           <Routes>
-            {/* route components in here */}
-            {/* <Route path="/" element={<HomePage />} /> */}
-            {/* <Route path="/chat" element={<ChatPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/chat" element={<ChatPage />} />
           </Routes>
         </>
         :
-        <AuthPage setUser={setUser}/> */}
-      {/* // } */} 
-      <NavBar />
+        <AuthPage setUser={setUser}/>
+      } 
+      {/* <NavBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/chat" element={<ChatPage />} />
-      </Routes>
+      </Routes> */}
     </main>
   );
 }
